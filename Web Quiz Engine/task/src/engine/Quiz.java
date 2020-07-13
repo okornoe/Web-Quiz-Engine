@@ -1,9 +1,31 @@
 package engine;
 
+class QuizResults {
+    private boolean success;
+    private String feedback;
+
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
+
+    public String getFeedback() {
+        return feedback;
+    }
+
+    public void setFeedback(String feedback) {
+        this.feedback = feedback;
+    }
+}
 public class Quiz {
     private String title;
     private String text;
     private String[] options;
+    private boolean success;
+    private String feedback;
 
 
     public Quiz() {
@@ -11,6 +33,7 @@ public class Quiz {
         text = "What is depicted on the Java Logo?";
         options = new String[]{"Robot", "The Tea leaf", "Cup of coffee", "Bug"};
     }
+
 
 
     public String getTitle() {
@@ -36,5 +59,22 @@ public class Quiz {
     public void setOptions(String[] options) {
         this.options = options;
     }
+
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
+
+    public String getFeedback() {
+        return feedback;
+    }
+
+    public void setFeedback(String feedback) {
+        this.feedback = feedback;
+    }
+
 }
 
