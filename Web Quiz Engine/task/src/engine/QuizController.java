@@ -1,4 +1,3 @@
-/*
 package engine;
 
 import org.springframework.web.bind.annotation.*;
@@ -7,15 +6,15 @@ import org.springframework.web.bind.annotation.*;
 public class QuizController {
 
 
-    @GetMapping(path = "api/quiz")
+/*    @GetMapping(path = "api/quiz")
     private Quiz returnJsonQuiz() {
         return new Quiz();
-    }
+    }*/
 
-    */
+
 /*@PostMapping(path = "api/quiz/{answer}")
-    private String*//*
+    private String*/
 
 
 }
-*/
+
