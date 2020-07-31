@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class WebQuizEngine {
 
     public static void main(String[] args) {
+        QuizDB.createQuizDB();
         SpringApplication.run(WebQuizEngine.class, args);
     }
 
