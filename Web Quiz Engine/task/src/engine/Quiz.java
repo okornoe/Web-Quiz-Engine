@@ -1,34 +1,17 @@
 package engine;
 
 
-class QuizResults {
-    private boolean success;
-    private String feedback;
+/*class QuizResults {
 
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public void setSuccess(boolean success) {
-        this.success = success;
-    }
-
-    public String getFeedback() {
-        return feedback;
-    }
-
-    public void setFeedback(String feedback) {
-        this.feedback = feedback;
-    }
-}
+}*/
 
 
 public class Quiz {
     private String title;
     private String text;
     private String[] options;
-    private boolean success;
-    private String feedback;
+/*    private boolean success;
+    private String feedback;*/
 
     public Quiz() {
         title = "The Java Logo";
@@ -62,7 +45,7 @@ public class Quiz {
         this.options = options;
     }
 
-    public boolean isSuccess() {
+/*    public boolean isSuccess() {
         return success;
     }
 
@@ -76,7 +59,7 @@ public class Quiz {
 
     public void setFeedback(String feedback) {
         this.feedback = feedback;
-    }
+    }*/
 
 }
 
