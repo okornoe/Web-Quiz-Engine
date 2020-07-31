@@ -10,7 +10,7 @@ public class QuizDB {
         quizDB = new ArrayList<>();
     }
 
-    public static List<Quiz> getQuizDB() {
+    public static List<Quiz> getAllQuiz() {
         return quizDB;
     }
 
