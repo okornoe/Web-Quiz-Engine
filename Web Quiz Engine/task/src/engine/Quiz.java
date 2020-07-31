@@ -1,25 +1,19 @@
 package engine;
 
-
-/*class QuizResults {
-
-}*/
-
-
 public class Quiz {
+    private int id;
     private String title;
     private String text;
     private String[] options;
-/*    private boolean success;
-    private String feedback;*/
+    private int answer;
 
     public Quiz() {
+        id = 1;
         title = "The Java Logo";
         text = "What is depicted on the Java Logo?";
         options = new String[]{"Robot", "The Tea leaf", "Cup of coffee", "Bug"};
+        answer = 2;
     }
-
-
 
     public String getTitle() {
         return title;
@@ -45,21 +39,20 @@ public class Quiz {
         this.options = options;
     }
 
-/*    public boolean isSuccess() {
-        return success;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setSuccess(boolean success) {
-        this.success = success;
+    public int getId() {
+        return id;
     }
 
-    public String getFeedback() {
-        return feedback;
+    public void setAnswer(int answer) {
+        this.answer = answer;
     }
 
-    public void setFeedback(String feedback) {
-        this.feedback = feedback;
-    }*/
-
+    public int getAnswer() {
+        return answer;
+    }
 }
 
