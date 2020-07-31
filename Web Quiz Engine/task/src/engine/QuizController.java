@@ -2,6 +2,7 @@ package engine;
 
 import org.springframework.web.bind.annotation.*;
 
+@Deprecated
 @RestController
 public class QuizController {
     QuizResults quizResults = new QuizResults();
