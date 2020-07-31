@@ -1,5 +1,10 @@
 package engine;
 
+import org.springframework.context.annotation.Bean;
+
+import java.util.ArrayList;
+import java.util.List;
+
 class QuizResults {
     private boolean success;
     private String feedback;
@@ -20,13 +25,15 @@ class QuizResults {
         this.feedback = feedback;
     }
 }
+
+
 public class Quiz {
     private String title;
     private String text;
     private String[] options;
     private boolean success;
     private String feedback;
-
+    //private List<Quiz> quizList;
 
     public Quiz() {
         title = "The Java Logo";
@@ -76,5 +83,16 @@ public class Quiz {
         this.feedback = feedback;
     }
 
+/*    public List<Quiz> getQuizList() {
+        return quizList;
+    }
+
+    public void addQuiz(Quiz quiz) {
+        this.quizList.add(quiz);
+    }
+
+    public List<Quiz> setQuizList() {
+        return quizList;
+    }*/
 }
 

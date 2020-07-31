@@ -5,12 +5,18 @@
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="delegatedBuild" value="false" />
+        <option name="testRunner" value="GRADLE" />
         <option name="distributionType" value="WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/Problems/Displaying pairs" />
             <option value="$PROJECT_DIR$/Problems/Integer part of a number" />
+            <option value="$PROJECT_DIR$/Problems/Output elements" />
+            <option value="$PROJECT_DIR$/Problems/Removing duplicates and sorting" />
+            <option value="$PROJECT_DIR$/Problems/Removing elements" />
+            <option value="$PROJECT_DIR$/Problems/Sherlock Holmes and the mystery of anagrams" />
             <option value="$PROJECT_DIR$/Web Quiz Engine/task" />
           </set>
         </option>

@@ -22,6 +22,5 @@ public class QuizController {
         }
         return quizResults ;
     }
-
 }
 

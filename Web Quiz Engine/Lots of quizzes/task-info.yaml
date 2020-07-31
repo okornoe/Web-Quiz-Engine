@@ -313,25 +313,39 @@ files:
   text: |
     package tests;
 
-    import com.google.gson.JsonArray;
     import com.google.gson.JsonElement;
     import com.google.gson.JsonObject;
     import engine.WebQuizEngine;
     import org.hyperskill.hstest.dynamic.input.DynamicTesting;
     import org.hyperskill.hstest.dynamic.input.DynamicTestingMethod;
+    import org.hyperskill.hstest.exception.outcomes.WrongAnswer;
     import org.hyperskill.hstest.mocks.web.request.HttpRequest;
+    import org.hyperskill.hstest.mocks.web.response.HttpResponse;
     import org.hyperskill.hstest.stage.SpringTest;
     import org.hyperskill.hstest.testcase.CheckResult;
 
     import java.util.Map;
 
-    import static tests.TestHelper.*;
-    import static tests.ApiTester.*;
-
+    import static org.hyperskill.hstest.common.JsonUtils.getJson;
+    import static org.hyperskill.hstest.common.JsonUtils.getPrettyJson;
+    import static org.hyperskill.hstest.testing.expect.Expectation.expect;
+    import static org.hyperskill.hstest.testing.expect.json.JsonChecker.*;
 
     public class WebQuizEngineTest extends SpringTest {
         public WebQuizEngineTest() {
             super(WebQuizEngine.class, 8889);
+        }
+
+        static void checkStatusCode(HttpResponse resp, int status) {
+            if (resp.getStatusCode() != status) {
+                throw new WrongAnswer(
+                    resp.getRequest().getMethod() + " " +
+                        resp.getRequest().getLocalUri() +
+                        " should respond with status code " + status + ", " +
+                        "responded: " + resp.getStatusCode() + "\n\n" +
+                        "Response body:\n\n" + resp.getContent()
+                );
+            }
         }
 
         private static int quizId1 = 0;
@@ -339,22 +353,22 @@ files:
 
         private static String quiz1 =
             "{\n" +
-            "  \"title\": \"The Java Logo\",\n" +
-            "  \"text\": \"What is depicted on the Java logo?\",\n" +
-            "  \"options\": [\"Robot\",\"Tea leaf\",\"Cup of coffee\",\"Bug\"],\n" +
-            "  \"answer\": 2\n" +
-            "}";
+                "  \"title\": \"The Java Logo\",\n" +
+                "  \"text\": \"What is depicted on the Java logo?\",\n" +
+                "  \"options\": [\"Robot\",\"Tea leaf\",\"Cup of coffee\",\"Bug\"],\n" +
+                "  \"answer\": 2\n" +
+                "}";
 
         private static String quiz2 =
             "{\n" +
-            "  \"title\": \"The Ultimate Question\",\n" +
-            "  \"text\": \"What is the answer to the Ultimate Question of Life, the Universe and Everything?\",\n" +
-            "  \"options\": [\"Everything goes right\",\"42\",\"2+2=4\",\"11011100\"],\n" +
-            "  \"answer\": 1\n" +
-            "}";
+                "  \"title\": \"The Ultimate Question\",\n" +
+                "  \"text\": \"What is the answer to the Ultimate Question of Life, the Universe and Everything?\",\n" +
+                "  \"options\": [\"Everything goes right\",\"42\",\"2+2=4\",\"11011100\"],\n" +
+                "  \"answer\": 1\n" +
+                "}";
 
         @DynamicTestingMethod
-        DynamicTesting[] dt = new DynamicTesting[] {
+        public DynamicTesting[] dt = new DynamicTesting[] {
             () -> testAllQuizzes(0),
 
             () -> testCreateQuiz(1),
@@ -382,64 +396,56 @@ files:
 
         private CheckResult testCreateQuiz(int quizNum) {
             String url = "/api/quizzes";
-            HttpRequest req = post(url, quizNum == 1 ? quiz1 : quiz2);
-            HttpResp resp = new HttpResp(req.send(), url, "POST");
+            HttpResponse resp = post(url, quizNum == 1 ? quiz1 : quiz2).send();
 
             checkStatusCode(resp, 200);
-            JsonElement json = getJson(resp);
 
-            checkIsObject(resp, json);
-            checkObjectKey(resp, json, "id");
-
-            JsonObject obj = json.getAsJsonObject();
-            checkIsInt(resp, obj.get("id"), "id");
-
-            if (quizNum == 1) {
-                quizId1 = obj.get("id").getAsInt();
-            } else {
-                quizId2 = obj.get("id").getAsInt();
-            }
+            expect(resp.getContent()).asJson().check(
+                isObject()
+                    .value("id", isInteger(i -> {
+                        if (quizNum == 1) {
+                            quizId1 = i;
+                        } else {
+                            quizId2 = i;
+                        }
+                        return true;
+                    }))
+                    .anyOtherValues()
+            );
 
             return CheckResult.correct();
         }
 
         private CheckResult testQuizExists(int quizNum) {
-
             int quizId = quizNum == 1 ? quizId1 : quizId2;
             String quiz = quizNum == 1 ? quiz1 : quiz2;
 
             String url = "/api/quizzes/" + quizId;
 
-            HttpRequest req = get(url);
-            HttpResp resp = new HttpResp(req.send(), url, "GET");
-
+            HttpResponse resp = get(url).send();
             checkStatusCode(resp, 200);
 
             JsonObject rightQuiz = getJson(quiz).getAsJsonObject();
             rightQuiz.remove("answer");
             rightQuiz.addProperty("id", quizId);
 
-            JsonElement json = getJson(resp);
-            checkIsObject(resp, json);
-            checkObjectKey(resp, json, "id");
-            checkObjectKey(resp, json, "title");
-            checkObjectKey(resp, json, "text");
-            checkObjectKey(resp, json, "options");
+            expect(getPrettyJson(rightQuiz)).asJson().check(
+                isObject()
+                    .value("id", quizId)
+                    .value("title", isString())
+                    .value("text", isString())
+                    .value("options", isArray(any()))
+            );
 
+            JsonElement json = resp.getJson();
             JsonObject obj = json.getAsJsonObject();
-            checkIsInt(resp, obj.get("id"), "id");
-            checkIsString(resp, obj.get("title"), "title");
-            checkIsString(resp, obj.get("text"), "text");
-            checkIsArray(resp, obj.get("options"), "options");
-
-            checkIntValue(resp, obj.get("id"), quizId, "id");
 
             if (!rightQuiz.equals(obj)) {
                 return CheckResult.wrong(
                     "The quiz sent to the program looked like this:\n" +
-                    getPrettyJson(rightQuiz) + "\n\n" +
-                    "But the received quiz looks like that:\n" +
-                    getPrettyJson(obj)
+                        getPrettyJson(rightQuiz) + "\n\n" +
+                        "But the received quiz looks like that:\n" +
+                        getPrettyJson(obj)
                 );
             }
 
@@ -447,14 +453,11 @@ files:
         }
 
         private CheckResult testQuizNotExists(int quizNum) {
-
             int quizId = quizNum == 1 ? quizId1 : quizId2;
 
             String url = "/api/quizzes/" + (quizId + 125);
 
-            HttpRequest req = get(url);
-            HttpResp resp = new HttpResp(req.send(), url, "GET");
-
+            HttpResponse resp = get(url).send();
             checkStatusCode(resp, 404);
 
             return CheckResult.correct();
@@ -462,20 +465,13 @@ files:
 
         private CheckResult testAllQuizzes(int count) {
             String url = "/api/quizzes";
-            HttpResp resp = new HttpResp(get(url).send(), url, "GET");
+            HttpResponse resp = get(url).send();
 
             checkStatusCode(resp, 200);
-            JsonElement json = getJson(resp);
 
-            checkIsArray(resp, json);
-            checkArrayLength(resp, json, count);
-
-            JsonArray arr = json.getAsJsonArray();
-            int index = 0;
-            for (JsonElement elem : arr) {
-                checkIsObject(resp, elem, "json[" + index + "]");
-                ++index;
-            }
+            expect(resp.getContent()).asJson().check(
+                isArray(count, isObject().anyOtherValues())
+            );
 
             return CheckResult.correct();
         }
@@ -483,27 +479,47 @@ files:
         private CheckResult checkQuizSuccess(int quizNum, String answerSent, boolean shouldResponse) {
             String url = "/api/quizzes/" + quizNum + "/solve";
 
-            HttpRequest req = TestHelper.post(url, Map.of("answer", answerSent));
-            HttpResp resp = new HttpResp(req.send(), url, "POST");
-
+            HttpRequest req = post(url, Map.of("answer", answerSent));
+            HttpResponse resp = req.send();
             checkStatusCode(resp, 200);
-            JsonElement json = getJson(resp);
 
-            checkIsObject(resp, json);
-            checkObjectKey(resp, json, "success");
-            checkObjectKey(resp, json, "feedback");
-
-            JsonObject obj = json.getAsJsonObject();
-
-            checkIsBoolean(resp, obj.get("success"), "success");
-            checkIsString(resp, obj.get("feedback"), "feedback");
-
-            checkBooleanValue(resp, obj.get("success"), shouldResponse, "success");
+            expect(resp.getContent()).asJson().check(
+                isObject()
+                    .value("success", shouldResponse)
+                    .value("feedback", isString())
+            );
 
             return CheckResult.correct();
         }
     }
   learner_created: false
+- name: src/resources/application.properties
+  visible: true
+  learner_created: true
+- name: src/engine/WebQuizEngine.java
+  visible: true
+  learner_created: true
+- name: build.gradle
+  visible: true
+  learner_created: true
+- name: src/engine/Quiz.java
+  visible: true
+  learner_created: true
+- name: src/engine/QuizController.java
+  visible: true
+  learner_created: true
+- name: src/engine/CreateQuiz.java
+  visible: true
+  learner_created: true
+- name: src/engine/CreateQuizController.java
+  visible: true
+  learner_created: true
+- name: src/engine/GetQuiz.java
+  visible: true
+  learner_created: true
+- name: src/engine/GetQuizController.java
+  visible: true
+  learner_created: true
 feedback_link: https://hyperskill.org/projects/91/stages/505/implement
 status: Unchecked
 record: -1
