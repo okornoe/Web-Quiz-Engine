@@ -1,18 +1,17 @@
 package engine;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Quiz {
+
     private int id;
     private String title;
     private String text;
     private String[] options;
+    @JsonIgnore
     private int answer;
 
     public Quiz() {
-        id = 1;
-        title = "The Java Logo";
-        text = "What is depicted on the Java Logo?";
-        options = new String[]{"Robot", "The Tea leaf", "Cup of coffee", "Bug"};
-        answer = 2;
     }
 
     public String getTitle() {
