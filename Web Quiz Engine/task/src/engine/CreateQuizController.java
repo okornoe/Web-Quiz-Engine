@@ -6,15 +6,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import static engine.QuizDB.addQuiz;
-import static engine.QuizDB.sizeOfQuizDB;
-
 
 @RestController
 public class CreateQuizController {
-
-    @PostMapping(path = "api/quizzes", consumes = "application/json")
-    private String createNewQuestion(@RequestBody Quiz quiz){
+    static int i;
+    @PostMapping(path = "api/quizzes", consumes = "application/json", produces = "application/json")
+    private Quiz createNewQuestion(@RequestBody Quiz quiz){
+        quiz.setId(++i);
         addQuiz(quiz);
-        return "posted" + sizeOfQuizDB();
+        return quiz;
     }
 }
