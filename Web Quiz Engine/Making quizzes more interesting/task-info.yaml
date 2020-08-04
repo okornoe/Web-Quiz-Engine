@@ -692,6 +692,311 @@ files:
         }
     }
   learner_created: false
+- name: src/engine/QuizNotFoundException.java
+  visible: true
+  text: |
+    package engine;
+
+    import org.springframework.http.HttpStatus;
+    import org.springframework.web.bind.annotation.ResponseStatus;
+
+    @ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "Quiz Not Found")
+    public class QuizNotFoundException extends RuntimeException{
+    }
+  learner_created: true
+- name: src/resources/application.properties
+  visible: true
+  text: |
+    server.port=8889
+    management.endpoints.web.exposure.include=*
+    management.endpoint.shutdown.enabled=true
+  learner_created: true
+- name: src/engine/WebQuizEngine.java
+  visible: true
+  text: |
+    package engine;
+
+    import org.springframework.boot.SpringApplication;
+    import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+    @SpringBootApplication
+    public class WebQuizEngine {
+
+        public static void main(String[] args) {
+            QuizDB.createQuizDB();
+            SpringApplication.run(WebQuizEngine.class, args);
+        }
+
+    }
+  learner_created: true
+- name: src/engine/QuizResults.java
+  visible: true
+  text: |
+    package engine;
+
+    public class QuizResults {
+        private boolean success;
+        private String feedback;
+
+        public boolean isSuccess() {
+            return success;
+        }
+
+        public void setSuccess(boolean success) {
+            this.success = success;
+        }
+
+        public String getFeedback() {
+            return feedback;
+        }
+
+        public void setFeedback(String feedback) {
+            this.feedback = feedback;
+        }
+    }
+  learner_created: true
+- name: build.gradle
+  visible: true
+  text: |
+    plugins {
+        id 'org.springframework.boot' version '2.2.2.RELEASE'
+        id 'java'
+    }
+
+    apply plugin: 'io.spring.dependency-management'
+
+    sourceCompatibility = '11'
+
+    repositories {
+        mavenCentral()
+    }
+
+    sourceSets.main.resources.srcDirs = ["src/resources"]
+
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter'
+        implementation 'org.springframework.boot:spring-boot-starter-actuator'
+        compile("org.springframework.boot:spring-boot-starter-web")
+    }
+  learner_created: true
+- name: src/engine/Quiz.java
+  visible: true
+  text: |+
+    package engine;
+
+    import com.fasterxml.jackson.annotation.JsonIgnore;
+    import com.fasterxml.jackson.annotation.JsonProperty;
+
+
+
+    public class Quiz {
+
+        private int id;
+        private String title;
+        private String text;
+        private String[] options;
+        @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+        private int answer;
+
+        public Quiz() {
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public String getText() {
+            return text;
+        }
+
+        public void setText(String text) {
+            this.text = text;
+        }
+
+        public String[] getOptions() {
+            return options;
+        }
+
+        public void setOptions(String[] options) {
+            this.options = options;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        @JsonIgnore
+        public void setAnswer(int answer) {
+            this.answer = answer;
+        }
+
+        @JsonIgnore
+        public int getAnswer() {
+            return answer;
+        }
+
+    }
+
+  learner_created: true
+- name: src/engine/QuizDB.java
+  visible: true
+  text: |
+    package engine;
+
+    import com.fasterxml.jackson.databind.ObjectMapper;
+
+    import java.util.ArrayList;
+    import java.util.List;
+
+    public class QuizDB {
+        private static List<Quiz> quizDB;
+
+
+        public static void  createQuizDB() {
+            quizDB = new ArrayList<>();
+        }
+
+        public static List<Quiz> getAllQuiz() {
+            return quizDB;
+        }
+
+        public static Quiz getAQuiz(int index) {
+            return quizDB.get(index - 1);
+        }
+
+        public static void addQuiz(Quiz quiz) {
+            quizDB.add(quiz);
+        }
+
+        public static int sizeOfQuizDB() {
+            return quizDB.size();
+        }
+    }
+  learner_created: true
+- name: src/engine/CreateQuizController.java
+  visible: true
+  text: |
+    package engine;
+
+    import org.springframework.web.bind.annotation.PostMapping;
+    import org.springframework.web.bind.annotation.RequestBody;
+    import org.springframework.web.bind.annotation.RestController;
+
+    import static engine.QuizDB.addQuiz;
+
+    @RestController
+    public class CreateQuizController {
+        static int i;
+        @PostMapping(path = "api/quizzes", consumes = "application/json", produces = "application/json")
+        private Quiz createNewQuestion(@RequestBody Quiz quiz) {
+            quiz.setId(++i);
+            addQuiz(quiz);
+            return quiz;
+        }
+    }
+  learner_created: true
+- name: src/engine/GetQuizController.java
+  visible: true
+  text: |
+    package engine;
+
+    import org.springframework.web.bind.annotation.*;
+
+    import java.util.List;
+
+    import static engine.QuizDB.*;
+
+    @RestController
+    public class GetQuizController {
+        public GetQuizController() {
+        }
+
+        @GetMapping(path = "api/quizzes/{id}")
+        public Quiz getQuiz(@PathVariable int id) throws QuizNotFoundException {
+            if (id < sizeOfQuizDB() || id > sizeOfQuizDB()) {
+                throw new QuizNotFoundException();
+            } else {
+                return getAQuiz(id);
+            }
+        }
+
+        @GetMapping(path = "api/quizzes")
+        public List<Quiz> getQuiz() {
+            return getAllQuiz();
+        }
+    }
+  learner_created: true
+- name: src/engine/QuizController.java
+  visible: true
+  text: |+
+    package engine;
+
+    import org.springframework.web.bind.annotation.*;
+
+    @Deprecated
+    @RestController
+    public class QuizController {
+        QuizResults quizResults = new QuizResults();
+
+        @GetMapping(path = "api/quiz")
+        private Quiz returnJsonQuiz() {
+            return new Quiz();
+        }
+
+        @PostMapping(path = "api/quiz")
+        private QuizResults postQuizAnswer(@RequestParam(value = "answer") int answer){
+            if (answer != 2) {
+                quizResults.setFeedback("Wrong answer! Please try again.");
+                quizResults.setSuccess(false);
+            } else {
+                quizResults.setFeedback("Congratulations, you're right!");
+                quizResults.setSuccess(true);
+            }
+            return quizResults;
+        }
+    }
+
+  learner_created: true
+- name: src/engine/SolveAQuizController.java
+  visible: true
+  text: |
+    package engine;
+
+    import com.fasterxml.jackson.core.JsonProcessingException;
+    import org.springframework.web.bind.annotation.*;
+    @RestController
+    public class SolveAQuizController {
+        QuizResults quizResults = new QuizResults();
+        Quiz quiz = new Quiz();
+        public SolveAQuizController(){
+        }
+
+        @PostMapping(path = "/api/quizzes/{id}/solve")
+        public QuizResults solveQuiz(@PathVariable int id, @RequestParam(value = "answer") int answer) throws QuizNotFoundException, JsonProcessingException {
+            if (id < 0 || id > QuizDB.sizeOfQuizDB()) {
+                throw new QuizNotFoundException();
+            } else {
+                //get the returned json from and retrieve the answer and do the comparism here
+                if (QuizDB.getAQuiz(id).getAnswer() != answer) {
+                    quizResults.setFeedback(" Wrong answer! Please try again.");
+                    quizResults.setSuccess(false);
+                } else {
+                    quizResults.setFeedback("Congratulations, you're right!");
+                    quizResults.setSuccess(true);
+                }
+            }
+            return quizResults ;
+        }
+    }
+  learner_created: true
 feedback_link: https://hyperskill.org/projects/91/stages/506/implement
 status: Unchecked
 record: -1

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="tests.WebQuizEngineTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2020-08-04T10:03:22" hostname="tetteh" time="7.627">
+  <properties/>
+  <testcase name="start" classname="tests.WebQuizEngineTest" time="7.627"/>
+  <system-out><![CDATA[?[1;31m
+Start test 1?[0m
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::        (v2.2.2.RELEASE)
+
+2020-08-04 10:03:23.612  INFO 17540 --- [    Test worker] engine.WebQuizEngine                     : Starting WebQuizEngine on tetteh with PID 17540 (started by okornoe in G:\uopeople\java2\projects\fx\Web Quiz Engine\Web Quiz Engine\task)
+2020-08-04 10:03:23.620  INFO 17540 --- [    Test worker] engine.WebQuizEngine                     : No active profile set, falling back to default profiles: default
+2020-08-04 10:03:26.757  INFO 17540 --- [    Test worker] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8889 (http)
+2020-08-04 10:03:26.777  INFO 17540 --- [    Test worker] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-08-04 10:03:26.779  INFO 17540 --- [    Test worker] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.29]
+2020-08-04 10:03:27.039  INFO 17540 --- [    Test worker] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-08-04 10:03:27.040  INFO 17540 --- [    Test worker] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 3260 ms
+2020-08-04 10:03:27.819  INFO 17540 --- [    Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-08-04 10:03:28.311  INFO 17540 --- [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 14 endpoint(s) beneath base path '/actuator'
+2020-08-04 10:03:28.421  INFO 17540 --- [    Test worker] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8889 (http) with context path ''
+2020-08-04 10:03:28.436  INFO 17540 --- [    Test worker] engine.WebQuizEngine                     : Started WebQuizEngine in 5.748 seconds (JVM running for 7.213)
+2020-08-04 10:03:29.185  INFO 17540 --- [nio-8889-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-08-04 10:03:29.187  INFO 17540 --- [nio-8889-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-08-04 10:03:29.221  INFO 17540 --- [nio-8889-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 33 ms
+?[1;31m
+Start test 2?[0m
+?[1;31m
+Start test 3?[0m
+?[1;31m
+Start test 4?[0m
+?[1;31m
+Start test 5?[0m
+?[1;31m
+Start test 6?[0m
+?[1;31m
+Start test 7?[0m
+?[1;31m
+Start test 8?[0m
+?[1;31m
+Start test 9?[0m
+?[1;31m
+Start test 10?[0m
+?[1;31m
+Start test 11?[0m
+?[1;31m
+Start test 12?[0m
+?[1;31m
+Start test 13?[0m
+?[1;31m
+Start test 14?[0m
+?[1;31m
+Start test 15?[0m
+?[1;31m
+Start test 16?[0m
+?[1;31m
+Start test 17?[0m
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
