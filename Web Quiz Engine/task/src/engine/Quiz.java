@@ -1,6 +1,9 @@
 package engine;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+
 
 public class Quiz {
 
@@ -8,7 +11,7 @@ public class Quiz {
     private String title;
     private String text;
     private String[] options;
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private int answer;
 
     public Quiz() {
@@ -46,12 +49,15 @@ public class Quiz {
         return id;
     }
 
+    @JsonIgnore
     public void setAnswer(int answer) {
         this.answer = answer;
     }
 
+    @JsonIgnore
     public int getAnswer() {
         return answer;
     }
+
 }
 
