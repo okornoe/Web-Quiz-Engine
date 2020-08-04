@@ -21,7 +21,7 @@ public class QuizController {
             quizResults.setFeedback("Congratulations, you're right!");
             quizResults.setSuccess(true);
         }
-        return quizResults ;
+        return quizResults;
     }
 }
 
