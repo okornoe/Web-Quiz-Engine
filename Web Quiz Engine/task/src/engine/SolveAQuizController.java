@@ -2,25 +2,27 @@ package engine;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
+
 @RestController
 public class SolveAQuizController {
     QuizResults quizResults = new QuizResults();
-    Quiz quiz = new Quiz();
     public SolveAQuizController(){
     }
 
     @PostMapping(path = "/api/quizzes/{id}/solve")
-    public QuizResults solveQuiz(@PathVariable int id, @RequestParam(value = "answer") int answer) throws QuizNotFoundException, JsonProcessingException {
+    public QuizResults solveQuiz(@PathVariable int id,  @RequestBody Answer answer) throws QuizNotFoundException, JsonProcessingException {
         if (id < 0 || id > QuizDB.sizeOfQuizDB()) {
             throw new QuizNotFoundException();
         } else {
-            //get the returned json from and retrieve the answer and do the comparism here
-            if (QuizDB.getAQuiz(id).getAnswer() != answer) {
-                quizResults.setFeedback(" Wrong answer! Please try again.");
-                quizResults.setSuccess(false);
-            } else {
-                quizResults.setFeedback("Congratulations, you're right!");
+            // work on comparing the content of the array rather than the objects overriding the equals method.
+            if (Arrays.equals(QuizDB.getAQuiz(id).getAnswer(), answer.getAnswer())) {
+                quizResults.setFeedback("Congratulations, you are right!");
                 quizResults.setSuccess(true);
+            } else {
+                quizResults.setFeedback("Wrong answer! Please try again.");
+                quizResults.setSuccess(false);
             }
         }
         return quizResults ;
