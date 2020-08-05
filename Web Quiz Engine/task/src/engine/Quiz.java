@@ -2,9 +2,10 @@ package engine;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-
-
+@Component
 public class Quiz {
 
     private int id;
@@ -12,9 +13,15 @@ public class Quiz {
     private String text;
     private String[] options;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private int answer;
+    private int[] answer;
+
+
+    public Quiz(int[] answer) {
+        this.answer = answer;
+    }
 
     public Quiz() {
+
     }
 
     public String getTitle() {
@@ -50,12 +57,12 @@ public class Quiz {
     }
 
     @JsonIgnore
-    public void setAnswer(int answer) {
+    public void setAnswer(int[] answer) {
         this.answer = answer;
     }
 
     @JsonIgnore
-    public int getAnswer() {
+    public int[] getAnswer() {
         return answer;
     }
 
