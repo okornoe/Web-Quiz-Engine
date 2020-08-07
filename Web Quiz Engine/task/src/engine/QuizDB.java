@@ -17,7 +17,7 @@ public class QuizDB {
         return quizDB;
     }
 
-    public static Quiz getAQuiz(int index) {
+    public static Quiz getAQuizByIndex(int index) {
         return quizDB.get(index - 1);
     }
 

@@ -15,8 +15,9 @@ public class GetQuizController {
     public Quiz getQuiz(@PathVariable int id) throws QuizNotFoundException {
         if (id < sizeOfQuizDB() || id > sizeOfQuizDB()) {
             throw new QuizNotFoundException();
-        } else {
-            return getAQuiz(id);
+        }
+         else {
+            return getAQuizByIndex(id);
         }
     }
 
