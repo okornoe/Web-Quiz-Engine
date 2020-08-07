@@ -17,7 +17,8 @@ public class SolveAQuizController {
             throw new QuizNotFoundException();
         } else {
             // work on comparing the content of the array rather than the objects overriding the equals method.
-            if (Arrays.equals(QuizDB.getAQuiz(id).getAnswer(), answer.getAnswer())) {
+            if (Arrays.equals(QuizDB.getAQuizByIndex(id).getAnswer(), answer.getAnswer()) ||
+                    (QuizDB.getAQuizByIndex(id).getAnswer() == null && answer.getAnswer().length == 0)) {
                 quizResults.setFeedback("Congratulations, you are right!");
                 quizResults.setSuccess(true);
             } else {
