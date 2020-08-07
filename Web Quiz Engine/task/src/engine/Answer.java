@@ -2,6 +2,8 @@ package engine;
 
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.NotNull;
+
 @Component
 public class Answer {
     private int[] answer;
