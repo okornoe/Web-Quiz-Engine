@@ -10,7 +10,10 @@ import static engine.QuizDB.addQuiz;
 public class CreateQuizController {
     static int i;
     @PostMapping(path = "api/quizzes", consumes = "application/json", produces = "application/json")
-    private Quiz createNewQuestion(@RequestBody Quiz quiz) {
+    private Quiz createNewQuestion(@RequestBody Quiz quiz) throws EmptyField {
+        if (quiz.getOptions() == null) {
+            throw new EmptyField();
+        }
         quiz.setId(++i);
         addQuiz(quiz);
         return quiz;
