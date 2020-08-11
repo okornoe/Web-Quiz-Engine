@@ -6,12 +6,12 @@ import javax.validation.constraints.Null;
 
 @Component
 public class Answer {
+    //@Null
     private int[] answer;
 
     public Answer() {
     }
 
-    @Null
     public int[] getAnswer() {
         return answer;
     }
