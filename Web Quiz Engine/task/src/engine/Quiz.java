@@ -2,14 +2,17 @@ package engine;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Component;
 
-import javax.validation.constraints.NotNull;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
 @Component
+@Entity
+@Table
 public class Quiz {
     private int id;
     private String title;
@@ -19,7 +22,6 @@ public class Quiz {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private int[] answer;
 
-
     public Quiz(int[] answer) {
         this.answer = answer;
     }
@@ -28,36 +30,44 @@ public class Quiz {
 
     }
 
+    public Quiz(String title, String text, String[] options, int[] answer) {
+        this.title = title;
+        this.text = text;
+        this.options = options;
+        this.answer = answer;
+    }
+
+    @Column(nullable = false)
     public String getTitle() {
         return title;
     }
-
     public void setTitle(String title) {
         this.title = title;
     }
 
+    @Column(nullable = false)
     public String getText() {
         return text;
     }
-
     public void setText(String text) {
         this.text = text;
     }
 
+    @Column(nullable = false)
     public String[] getOptions() {
         return options;
     }
-
     public void setOptions(String[] options) {
         this.options = options;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
+    @Column(nullable = false)
+    @Id
     public int getId() {
         return id;
+    }
+    public void setId(int id) {
+        this.id = id;
     }
 
     @JsonIgnore
@@ -66,6 +76,7 @@ public class Quiz {
     }
 
     @JsonIgnore
+    @Column(nullable = false)
     public int[] getAnswer() {
         return answer;
     }
