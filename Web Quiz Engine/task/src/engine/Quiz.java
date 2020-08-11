@@ -10,6 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
+
+//Do not forget to change to the database name from test name to production name
+
 @Component
 @Entity
 @Table
@@ -76,7 +79,7 @@ public class Quiz {
     }
 
     @JsonIgnore
-    @Column(nullable = false)
+    //@Column(nullable = true)
     public int[] getAnswer() {
         return answer;
     }
