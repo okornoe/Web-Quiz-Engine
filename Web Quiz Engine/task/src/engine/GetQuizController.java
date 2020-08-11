@@ -8,7 +8,7 @@ import static engine.QuizDB.*;
 
 @RestController
 public class GetQuizController {
-    public GetQuizController() {
+ /*   public GetQuizController() {
     }
 
     @GetMapping(path = "api/quizzes/{id}")
@@ -24,5 +24,5 @@ public class GetQuizController {
     @GetMapping(path = "api/quizzes")
     public List<Quiz> getQuiz() {
         return getAllQuiz();
-    }
+    }*/
 }

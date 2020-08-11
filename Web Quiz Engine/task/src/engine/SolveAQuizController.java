@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 @RestController
 public class SolveAQuizController {
-    QuizResults quizResults = new QuizResults();
+    /*QuizResults quizResults = new QuizResults();
     public SolveAQuizController(){
     }
 
@@ -27,5 +27,5 @@ public class SolveAQuizController {
             }
         }
         return quizResults ;
-    }
+    }*/
 }

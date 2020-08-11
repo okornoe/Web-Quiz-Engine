@@ -8,7 +8,7 @@ import static engine.QuizDB.addQuiz;
 
 @RestController
 public class CreateQuizController {
-    static int i;
+/*    static int i;
     @PostMapping(path = "api/quizzes", consumes = "application/json", produces = "application/json")
     private Quiz createNewQuestion(@RequestBody Quiz quiz) throws EmptyField {
         if (quiz.getOptions() == null) {
@@ -17,5 +17,5 @@ public class CreateQuizController {
         quiz.setId(++i);
         addQuiz(quiz);
         return quiz;
-    }
+    }*/
 }
