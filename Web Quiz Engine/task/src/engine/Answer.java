@@ -2,7 +2,7 @@ package engine;
 
 import org.springframework.stereotype.Component;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 
 @Component
 public class Answer {
@@ -11,6 +11,7 @@ public class Answer {
     public Answer() {
     }
 
+    @Null
     public int[] getAnswer() {
         return answer;
     }
