@@ -53,6 +53,12 @@ public class QuizController {
         }
         return quizResults ;
     }
+    @DeleteMapping(path = "/api/quizzes/{id}")
+    public void deleteQuizById(@PathVariable(value = "id") Integer id) throws QuizNotFoundException {
+        Quiz quiz = quizRepository.findById(id)
+                .orElseThrow(QuizNotFoundException::new);
+        quizRepository.delete(quiz);
+    }
 }
 
 
